@@ -1,8 +1,5 @@
 import React, {Component} from 'react';
 import DbRequester from '../Models/dbRequester.js';
-import notifications from '../Notifications/notifications';
-import $ from 'jquery';
-import '../Components/currentAdStyles.css';
 
 export default class Profile extends Component {
 
@@ -15,16 +12,11 @@ export default class Profile extends Component {
         };
 
         this.loadUserInfo = this.loadUserInfo.bind(this);
-        // this.onChangeHandler = this.onChangeHandler.bind(this);
-        // this.createComment = this.createComment.bind(this);
-        // this.showComments = this.showComments.bind(this);
-        // this.deleteClicked = this.deleteClicked.bind(this);
-        // this.closeModal = this.closeModal.bind(this);
-        // this.onDeleteAd = this.onDeleteAd.bind(this);
     }
 
     componentDidMount() {
-        this.loadUserInfo();
+        if(!sessionStorage.getItem("username")) this.context.router.push('/');
+            this.loadUserInfo();
         //this.showComments(this.props.params.adId);
     }
 
@@ -79,8 +71,13 @@ export default class Profile extends Component {
                 </div>
                 </div>
                 );
-                }
+    }
 
 }
+
+Profile.contextTypes = {
+    router: React.PropTypes.object
+};
+
 
 

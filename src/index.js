@@ -24,10 +24,10 @@ ReactDOM.render((
             <Route path="register" component={Register}/>
             <Route path="ads" component={Ads} />
             <Route path="ads/:adId" component={Ad}/>
-            <Route path="/create-ad" component={CreateController}/>
-            <Route path="/edit/:adID" component={EditController}/>
+            <Route path="create-ad" component={CreateController}/>
+            <Route path="edit/:adID" component={EditController}/>
             <Route path="users" component={Users}/>
-            <Route path="/profile" component={MyProfile}/>
+            <Route path="profile" component={MyProfile}/>
         </Route>
     </Router>
 ), document.getElementById('root'));

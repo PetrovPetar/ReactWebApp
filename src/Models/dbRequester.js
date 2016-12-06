@@ -97,12 +97,12 @@ let DbRequester = (function () {
     }
 
 
-    function loadAdDetails(adID, onAdSuccess) {
+    function loadAdDetails(adID) {
         return $.ajax({
             method: "GET",
             url: baseUrl + "appdata/" + appId + "/ads/" + adID,
             headers: getUserAuthHeaders()
-        }).then(onAdSuccess);
+        });
 
     }
 

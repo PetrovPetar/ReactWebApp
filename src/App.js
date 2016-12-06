@@ -108,7 +108,7 @@ export default class App extends Component {
                                     <li>
                                         <Link to="/" activeClassName="active" onClick={this.logout.bind(this)}>Излез</Link>
                                     </li>
-                                    <li><Link to="/">Здравей, {this.state.username}</Link></li>
+                                    <li><Link to="/profile">Здравей, {this.state.username}</Link></li>
                                 </ul>
                             </div>
                         </div>

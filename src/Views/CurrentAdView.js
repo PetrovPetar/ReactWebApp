@@ -4,7 +4,6 @@ import DbRequester from '../Models/dbRequester.js';
 import notifications from '../Notifications/notifications';
 import $ from 'jquery';
 import AdControls from '../Controllers/AdControls.js';
-import '../Components/currentAdStyles.css';
 
 export default class Ad extends Component {
 
@@ -22,7 +21,6 @@ export default class Ad extends Component {
             tableRows: '',
             comment: '',
             showModal: false,
-            views: 0,
             urlAdID: ''
         };
 
@@ -33,33 +31,41 @@ export default class Ad extends Component {
         this.deleteClicked = this.deleteClicked.bind(this);
         this.closeModal = this.closeModal.bind(this);
         this.onDeleteAd = this.onDeleteAd.bind(this);
-        this.increaseViews = this.increaseViews.bind(this);
     }
 
     componentDidMount() {
         this.loadAd();
         this.showComments(this.props.params.adId);
-
     }
 
-    increaseViews(urlAdID, title, author, body, price, phone, picture, oldviews) {
-        //event.preventDefault();
-        console.log(oldviews);
-        console.log(this.props.params.adId);
-        console.log(urlAdID);
-        console.log(title);
-        let newviews = parseInt(oldviews) + 1;
-        DbRequester.editAd(urlAdID, title, author, body, price, phone, picture, newviews)
-            .then(increaseViewsAdSuccess.bind(this));
+    // increaseViewCount(adId){
+    //     let result = 1;
+    //     function increaseViews(request, response, modules) {
+    //         let requestBody = request.body; // this gets the JSON body of the request
+    //         response.body = request.body;
+    //         response.body.views = '1';
+    //         response.complete(200);
+    //     }
+    // }
 
-        function increaseViewsAdSuccess(response) {
-            console.log(response);
-            console.log('New views: ' + response.views);
-            //this.loadAd();
-            //this.context.router.push('/ads');
-            //notifications.showInfo("Обявата беше успешно изтрита!");
-        }
-    }
+    // increaseViews(urlAdID, title, author, body, price, phone, picture, oldviews) {
+    //     //event.preventDefault();
+    //     console.log(oldviews);
+    //     console.log(this.props.params.adId);
+    //     console.log(urlAdID);
+    //     console.log(title);
+    //     let newviews = parseInt(oldviews) + 1;
+    //     DbRequester.editAd(urlAdID, title, author, body, price, phone, picture, newviews)
+    //         .then(increaseViewsAdSuccess.bind(this));
+    //
+    //     function increaseViewsAdSuccess(response) {
+    //         console.log(response);
+    //         console.log('New views: ' + response.views);
+    //         //this.loadAd();
+    //         //this.context.router.push('/ads');
+    //         //notifications.showInfo("Обявата беше успешно изтрита!");
+    //     }
+    // }
 
     loadAd() {
         DbRequester.loadAdDetails(this.props.params.adId)
@@ -79,30 +85,29 @@ export default class Ad extends Component {
                 urlAdID: this.props.params.adId
             };
 
-            if (ad._acl.creator === sessionStorage.getItem('userId')) {
+            if (ad._acl.creator === sessionStorage.getItem('userId') ||
+                sessionStorage.getItem("userId") == "58467dea01bde1035e82c073") {
                 newState.canEdit = true;
             }
 
             this.setState(newState);
-
-
         }
     }
 
-    componentWillUnmount() {
-        //alert("unmount");
-        //increase view count
-        this.increaseViews(
-            this.props.params.adId,
-            this.state.title,
-            this.state.author,
-            this.state.body,
-            this.state.price,
-            this.state.phone,
-            this.state.picture,
-            this.state.views
-        );
-    }
+    // componentWillUnmount() {
+    //     //alert("unmount");
+    //     //increase view count
+    //     this.increaseViews(
+    //         this.props.params.adId,
+    //         this.state.title,
+    //         this.state.author,
+    //         this.state.body,
+    //         this.state.price,
+    //         this.state.phone,
+    //         this.state.picture,
+    //         this.state.views
+    //     );
+    // }
 
     closeModal() {
         this.setState({showModal: false});
@@ -262,19 +267,19 @@ export default class Ad extends Component {
             for (let comment of sortedDescComments) {
                 
                 if (comment.adId === adId) {
-                let tr = $('<tr>').attr("id", comment._id)
-                    .append($('<td>').text(comment.author))
-                    .append($('<td class="body">').text(comment.body));
+                    let tr = $('<tr>').attr("id", comment._id)
+                        .append($('<td>').text(comment.author))
+                        .append($('<td class="body">').text(comment.body));
 
-                if (comment.author === sessionStorage.getItem("username")) {
-                    $('<td>')
-                        .append($('<button class="btn btn-default">').text("Изтрий").click(()=> {deleteComment(comment._id);}))
-                        .append($('<button class="btn btn-default">').text("Редактирарй").click(()=> {editComment(comment._id);})).appendTo(tr);
-                } else {
-                    $(tr).append($('<td>'));
-                }
+                    if (comment.author === sessionStorage.getItem("username")) {
+                        $('<td>')
+                            .append($('<button class="btn btn-default">').text("Изтрий").click(()=> {deleteComment(comment._id);}))
+                            .append($('<button class="btn btn-default">').text("Редактирарй").click(()=> {editComment(comment._id);})).appendTo(tr);
+                    } else {
+                        $(tr).append($('<td>'));
+                    }
 
-                $(tableRows).append(tr);
+                    $(tableRows).append(tr);
                 }
 
             }
