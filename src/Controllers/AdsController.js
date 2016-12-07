@@ -4,6 +4,7 @@ import AdCard from '../Components/AdCard.js';
 import './AdsController.css';
 import {Pagination} from 'react-bootstrap';
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import observer from '../Models/observer';
 
 export default class AdsController extends Component {
     constructor(props){
@@ -15,9 +16,11 @@ export default class AdsController extends Component {
     }
 
     componentDidMount(){
+        observer.errorMessageClear();
         if(!sessionStorage.getItem("username"))
             this.context.router.push('/');
-        this.loadAds();
+        else
+            this.loadAds();
     }
 
     loadAds(){

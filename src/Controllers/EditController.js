@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import EditView from '../Views/EditView.js'
 import DbRequester from '../Models/dbRequester.js';
 import notifications from '../Notifications/notifications';
-import $ from 'jquery';
+import observer from '../Models/observer';
 
 export default class EditController extends Component {
 
@@ -27,6 +27,7 @@ export default class EditController extends Component {
    
 
     componentDidMount() {
+        observer.errorMessageClear();
         DbRequester.loadAdDetails(this.props.params.adID, this.onLoadSuccess);
     }
 

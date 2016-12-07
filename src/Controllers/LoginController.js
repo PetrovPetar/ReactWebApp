@@ -3,6 +3,7 @@ import LoginView from '../Views/LoginView'
 import DbRequester from '../Models/dbRequester';
 import notifications from '../Notifications/notifications';
 import user from '../Models/user';
+import observer from '../Models/observer';
 
 export default class LoginController extends Component {
     constructor(props){
@@ -14,6 +15,7 @@ export default class LoginController extends Component {
     }
 
     componentWillMount(){
+        observer.errorMessageClear();
         if(sessionStorage.getItem("username"))  this.context.router.push('/');
     }
     render() {

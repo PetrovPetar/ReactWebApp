@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import UserView from '../Views/UserView'
 import DbRequester from '../Models/dbRequester';
 import $ from 'jquery';
+import observer from '../Models/observer';
 
 export default class UserController extends Component {
     constructor(props){
@@ -10,10 +11,11 @@ export default class UserController extends Component {
     }
 
     componentWillMount(){
-        // check if user is not admin
-        if(sessionStorage.getItem("userId") != "58467dea01bde1035e82c073")  this.context.router.push('/');
-
-        this.loadUsers();
+        observer.errorMessageClear();
+        if(!sessionStorage.getItem("username"))
+            this.context.router.push('/');
+        else
+         this.loadUsers();
     }
 
     loadUsers(){

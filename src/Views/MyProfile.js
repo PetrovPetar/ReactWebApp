@@ -15,7 +15,9 @@ export default class Profile extends Component {
     }
 
     componentDidMount() {
-        if(!sessionStorage.getItem("username")) this.context.router.push('/');
+        if(!sessionStorage.getItem("username"))
+            this.context.router.push('/');
+        else
             this.loadUserInfo();
         //this.showComments(this.props.params.adId);
     }

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import NavigationBar from './Components/NavigationBar';
 import $ from 'jquery';
+import Footer from './Components/Footer.js';
 
 // Import requester
 import DbRequester from './Models/dbRequester';
@@ -13,7 +14,7 @@ import notifications  from './Notifications/notifications';
 export default class App extends Component {
     constructor(props) {
         super(props);
-        this.state = { loggedIn: false, username: '', userId: '', isAdmin: false };
+        this.state = { loggedIn: false, username: '', userId: ''};
         this.onSessionUpdate = this.onSessionUpdate.bind(this);
     }
 
@@ -36,57 +37,22 @@ export default class App extends Component {
     }
 
     onSessionUpdate() {
-        if (sessionStorage.getItem("username") == "admin") {
+        if(sessionStorage.getItem("username")){
             this.setState({
                 loggedIn: true,
                 username: sessionStorage.getItem("username"),
-                userId: sessionStorage.getItem("userId"),
-                isAdmin: true});
-        } else if(sessionStorage.getItem("username")){
-            this.setState({
-                loggedIn: true,
-                username: sessionStorage.getItem("username"),
-                userId: sessionStorage.getItem("userId"),
-                isAdmin: false});
+                userId: sessionStorage.getItem("userId")});
         } else {
             this.setState({
                 loggedIn: false,
                 username: '',
-                userId:'',
-                isAdmin:false });
+                userId:''});
         }
     }
 
     render() {
         let navBar = {};
-        if(this.state.loggedIn && !this.state.isAdmin){
-            navBar = (
-                <NavigationBar>
-                    <nav className="navbar navbar-default navbar-fixed-top" role="navigation">
-                        <div className="container">
-                            <div className="collapse navbar-collapse navbar-ex1-collapse">
-                                <ul className="nav navbar-nav">
-                                    <li>
-                                        <Link to="/" activeClassName="active">Начало</Link>
-                                    </li>
-                                    <li>
-                                        <Link to="/ads" activeClassName="active">Всички обяви</Link>
-                                    </li>
-                                    <li>
-                                        <Link to="/create-ad" activeClassName="active">Създай обява</Link>
-                                    </li>
-                                    <li>
-                                        <Link to="/" activeClassName="active" onClick={this.logout.bind(this)}>Излез</Link>
-                                    </li>
-                                    <li><Link to="/profile">Здравей, {this.state.username}</Link></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </nav>
-
-                </NavigationBar>
-            );
-        } else if(this.state.isAdmin){
+        if(this.state.loggedIn){
             navBar = (
                 <NavigationBar>
                     <nav className="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -113,7 +79,6 @@ export default class App extends Component {
                             </div>
                         </div>
                     </nav>
-
                 </NavigationBar>
             );
         } else {
@@ -149,6 +114,7 @@ export default class App extends Component {
                 <div id="infoBox"></div>
                 <div id="errorBox"></div>
                 {this.props.children}
+                <Footer />
             </div>
         );
     }
@@ -161,6 +127,7 @@ export default class App extends Component {
             sessionStorage.clear();
             observer.onSessionUpdate();
             notifications.showInfo("Излязохте успешно от профилът си.");
+            this.props.router.push('/')
         }
     }
 }

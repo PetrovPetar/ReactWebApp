@@ -4,6 +4,7 @@ import DbRequester from '../Models/dbRequester';
 import notifications from '../Notifications/notifications';
 import user from '../Models/user';
 import $ from 'jquery';
+import observer from '../Models/observer';
 
 export default class RegisterController extends Component {
     constructor(props){
@@ -21,6 +22,7 @@ export default class RegisterController extends Component {
     }
 
     componentWillMount(){
+        observer.errorMessageClear();
         if(sessionStorage.getItem("username"))  this.context.router.push('/');
     }
 
